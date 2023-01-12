@@ -1,6 +1,5 @@
 #!/bin/bash
 apt update
-apt install -y git
 apt install -y hugo
 apt update
 apt-get update && apt-get install make
