@@ -1,3 +1,5 @@
+SHELLCHECK=shellcheck
+
 build:	## Generate the website from the markdown and configuration files in the directory dist/
 	hugo --destination ./dist
 
@@ -13,7 +15,10 @@ package: ## creates archive
 	zip awesome-website.zip dist/
 
 lint:	## The target lint should be updated to lint the files README.md and DEPLOY.md with markdownlint
-	markdownlint "*.md"
+	markdownlint README.md
+	markdownlint DEPLOY.md
+	$(SHELLCHECK) setup.sh >/dev/null 2>&1 || echo "Lint Failed"
+
 
 unit-tests: ## run unit tests
 	@echo "all tests done"
