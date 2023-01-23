@@ -8,7 +8,11 @@ post:	## Create a new blog post whose filename and title come from the environme
 clean:	## Cleanup the content of the directoy dist/
 	rm -rf dist/
 
-lint:
+package: ## creates archive
+	make build
+	zip awesome-website.zip dist/
+
+lint:	## The target lint should be updated to lint the files README.md and DEPLOY.md with markdownlint
 	markdownlint "*.md"
 
 unit-tests: ## run unit tests
@@ -16,10 +20,6 @@ unit-tests: ## run unit tests
 
 integration-tests: ## run integration-tests
 	@echo "all integration-tests done"
-
-package: ## creates archive
-	make build
-	zip awesome-website.zip dist/
 
 validate: ## run validate
 	@echo "all validations done"
