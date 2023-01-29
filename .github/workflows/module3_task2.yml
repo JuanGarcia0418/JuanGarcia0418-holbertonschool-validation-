@@ -1,42 +1,32 @@
 name: module3_task2
 on:
   push:
-    branches: [main, master]
+    branches:
+      - main
   schedule:
-    - cron: "0 0 * * *"
+    - cron: '0 0 * * *'
 jobs:
-  package:
+  module3_task2_everytime:
     runs-on: ubuntu-18.04
     steps:
-      - name: Checkout
+      - name: Check out repository code
         uses: actions/checkout@v3
-      - name: Setup Hugo
-        run: |
-          cd module3_task2/
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: |
+          npm install -g markdownlint-cli markdown-link-check
+          cd module3_task2
           sudo ./setup.sh
-      - name: lint
-        run: |
-          cd module3_task2/
-          make lint
-      - name: build
-        run: |
-          cd module3_task2/
           make build
-      - name: post
-        run: |
-          cd module3_task2/
-          make POST_TITLE="Test Title" POST_NAME="Test-name" post
-      - name: Integration tests
-        run: |
-          cd module3_task2/
-          make integration-tests
+          make help
           make validate
-          make unit-tests
+          make test
           make package
-          make clean
-      - name: archive build
-        if: ${{ success()}}
+          make lint
+        if: ${{ github.ref == 'refs/heads/main' }}
+      - name: Archive generated zip
         uses: actions/upload-artifact@v3
         with:
-          name: upload-package
+          name: awesome-website
           path: module3_task2/awesome-website.zip
